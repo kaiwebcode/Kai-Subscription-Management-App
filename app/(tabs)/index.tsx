@@ -1,98 +1,256 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import CreateSubscriptionModal from "@/components/CreateSubscriptionModal";
+import ListHeading from "@/components/ListHeading";
+import SubscriptionCard from "@/components/SubscriptionCard";
+import UpcomingSubsciption from "@/components/UpcomingSubscriptionCard";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import {
+  HOME_BALANCE,
+  UPCOMING_SUBSCRIPTIONS,
+} from "@/constants/data";
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+import { icons } from "@/constants/icons";
+import { useSubscriptions } from "@/context/SubscriptionContext";
+
+import { posthog } from "@/lib/posthog";
+import { formatCurrency } from "@/lib/utils";
+
+import { useUser } from "@clerk/expo";
+import dayjs from "dayjs";
+import { useState } from "react";
+
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
+export default function Index() {
+  const {
+    subscriptions,
+    addSubscription,
+  } = useSubscriptions();
+
+  const [expandedSubscriptionId, setExpandedSubscriptionId] =
+    useState<string | null>(null);
+
+  const [showCreateModal, setShowCreateModal] =
+    useState(false);
+
+  const { isLoaded, user } = useUser();
+
+  /*
+   * Clerk user
+   */
+  const userName =
+    user?.fullName ||
+    user?.primaryEmailAddress?.emailAddress
+      ?.split("@")[0]
+      ?.split(/[._-]/)[0] ||
+    "User";
+
+  const userEmail =
+    user?.primaryEmailAddress?.emailAddress ||
+    user?.emailAddresses?.[0]?.emailAddress ||
+    "";
+
+  const userAvatar = user?.imageUrl;
+
+  /*
+   * Wait for Clerk
+   */
+  if (!isLoaded) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator
+          size="small"
+          color="#ea7a53"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+      </SafeAreaView>
+    );
+  }
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  /*
+   * Handle new subscription
+   */
+  const handleSubscriptionCreated = (
+    subscription: Subscription
+  ) => {
+    addSubscription(subscription);
+
+    /*
+     * Make sure the new card can immediately
+     * be seen in the list.
+     */
+    setExpandedSubscriptionId(null);
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-background mb-10">
+      <FlatList
+        data={subscriptions}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        extraData={expandedSubscriptionId}
+        contentContainerStyle={{
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 40,
+        }}
+        ItemSeparatorComponent={() => (
+          <View className="h-4" />
+        )}
+        ListHeaderComponent={
+          <View>
+            {/* Header */}
+            <View className="home-header">
+  <View className="home-user">
+    {userAvatar ? (
+      <Image
+        source={{ uri: userAvatar }}
+        className="home-avatar"
+      />
+    ) : (
+      <View className="home-avatar items-center justify-center bg-accent">
+        <Text className="text-xl font-sans-bold text-white">
+          {userName.charAt(0).toUpperCase()}
+        </Text>
+      </View>
+    )}
+
+    <View className="home-user-copy">
+      <Text
+        className="home-user-name"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {userName}
+      </Text>
+
+      <Text
+        className="home-user-email"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {user?.primaryEmailAddress?.emailAddress ?? ""}
+      </Text>
+    </View>
+  </View>
+
+  <Pressable
+    onPress={() => setShowCreateModal(true)}
+    className="home-add-button"
+    hitSlop={8}
+  >
+    <Image
+      source={icons.add}
+      className="home-add-icon"
+    />
+  </Pressable>
+</View>
+
+            {/* Balance */}
+            <View className="home-balance-card">
+              <Text className="home-balance-label">
+                Balance
+              </Text>
+
+              <View className="home-balance-row">
+                <Text className="home-balance-amount">
+                  {formatCurrency(
+                    HOME_BALANCE.amount
+                  )}
+                </Text>
+
+                <Text className="home-balance-date">
+                  {dayjs(
+                    HOME_BALANCE.nextRenewalDate
+                  ).format("MM/DD")}
+                </Text>
+              </View>
+            </View>
+
+            {/* Upcoming */}
+            <View className="mb-2">
+              <ListHeading title="Upcoming" />
+
+              <FlatList
+                ListHeaderComponent={
+                  <View className="h-4" />
+                }
+                data={UPCOMING_SUBSCRIPTIONS}
+                renderItem={({ item }) => (
+                  <UpcomingSubsciption
+                    {...item}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+
+            {/* All subscriptions */}
+            <View className="mt-4 mb-4">
+              <ListHeading title="All Subscriptions" />
+            </View>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <SubscriptionCard
+            {...item}
+            expanded={
+              expandedSubscriptionId === item.id
+            }
+            onPress={() =>
+              setExpandedSubscriptionId(
+                (currentId) => {
+                  const isOpening =
+                    currentId !== item.id;
+
+                  if (isOpening) {
+                    posthog?.capture(
+                      "subscription_details_opened",
+                      {
+                        subscription_id:
+                          item.id,
+                        billing_interval:
+                          item.billing,
+                        category:
+                          item.category,
+                        status:
+                          item.status,
+                      }
+                    );
+                  }
+
+                  return isOpening
+                    ? item.id
+                    : null;
+                }
+              )
+            }
+          />
+        )}
+        ListEmptyComponent={
+          <Text className="home-empty-state text-center">
+            No subscriptions yet.
+          </Text>
+        }
+      />
+
+      {/* Create subscription modal */}
+      <CreateSubscriptionModal
+        visible={showCreateModal}
+        onClose={() =>
+          setShowCreateModal(false)
+        }
+        onCreated={handleSubscriptionCreated}
+      />
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
