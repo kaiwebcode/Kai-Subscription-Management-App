@@ -145,17 +145,9 @@ export default function WelcomeScreen() {
     buttonTranslateY,
   ]);
 
-  // -----------------------------------------
-  // NAVIGATION
-  // -----------------------------------------
-
   const handleGetStarted = () => {
     router.push("/(auth)/sign-in");
   };
-
-  // -----------------------------------------
-  // SCREEN
-  // -----------------------------------------
 
   return (
     <View
@@ -168,10 +160,6 @@ export default function WelcomeScreen() {
 
       <SafeAreaView className="flex-1" edges={["top", "bottom"]}>
         <View className="flex-1">
-          {/* ================================= */}
-          {/* PATTERN */}
-          {/* ================================= */}
-
           <Animated.View
             style={{
               width: "100%",
@@ -198,20 +186,12 @@ export default function WelcomeScreen() {
             />
           </Animated.View>
 
-          {/* ================================= */}
-          {/* CONTENT */}
-          {/* ================================= */}
-
           <View
             className="flex-1 items-center"
             style={{
               paddingHorizontal: horizontalPadding,
             }}
           >
-            {/* -------------------------------- */}
-            {/* TEXT */}
-            {/* -------------------------------- */}
-
             <Animated.View
               className="items-center w-full"
               style={{
@@ -226,8 +206,6 @@ export default function WelcomeScreen() {
                 marginTop: isVerySmallScreen ? 6 : isSmallScreen ? 10 : 12,
               }}
             >
-              {/* TITLE */}
-
               <Text
                 className="text-center font-sans-bold text-white"
                 numberOfLines={1}
@@ -243,8 +221,6 @@ export default function WelcomeScreen() {
                 Gain Financial Clarity
               </Text>
 
-              {/* SUBTITLE */}
-
               <Text
                 className="mt-2 text-center font-sans-medium text-white"
                 style={{
@@ -256,10 +232,6 @@ export default function WelcomeScreen() {
                 Track, analyze and cancel with ease
               </Text>
             </Animated.View>
-
-            {/* -------------------------------- */}
-            {/* GET STARTED BUTTON */}
-            {/* -------------------------------- */}
 
             <Animated.View
               className="w-full"
@@ -331,10 +303,6 @@ export default function WelcomeScreen() {
                 </Text>
               </Pressable>
             </Animated.View>
-
-            {/* -------------------------------- */}
-            {/* FLEXIBLE BOTTOM SPACE */}
-            {/* -------------------------------- */}
 
             <View className="flex-1" />
           </View>
