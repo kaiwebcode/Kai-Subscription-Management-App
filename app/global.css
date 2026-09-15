@@ -351,6 +351,170 @@
     @apply text-sm font-sans-bold text-accent;
   }
 
+  /* =========================================================
+   AUTH BRAND
+   ========================================================= */
+
+  .auth-brand-block {
+    @apply mt-3 items-center;
+  }
+
+  .auth-logo-wrap {
+    @apply mb-8 flex-row items-center;
+  }
+
+  .auth-logo-mark {
+    @apply h-14 w-14 items-center justify-center rounded-2xl bg-primary;
+  }
+
+  .auth-logo-mark-text {
+    @apply text-2xl font-sans-extrabold text-white;
+  }
+
+  .auth-brand-copy {
+    @apply ml-0.5;
+  }
+
+  .auth-wordmark {
+    @apply text-3xl font-sans-extrabold tracking-[-1px] text-primary;
+  }
+
+  .auth-wordmark-accent {
+    @apply text-accent;
+  }
+
+  .auth-wordmark-sub {
+    @apply mt-0.5 text-[10px] font-sans-bold uppercase tracking-[1.5px] text-muted-foreground;
+  }
+
+  /* =========================================================
+   AUTH HEADING
+   ========================================================= */
+
+  .auth-title {
+    @apply text-center text-3xl font-sans-bold tracking-[-1px] text-primary;
+  }
+
+  .auth-subtitle {
+    @apply mt-2 max-w-[330px] text-center text-sm leading-6 font-sans-medium text-muted-foreground;
+  }
+
+  /* =========================================================
+   AUTH CARD
+   ========================================================= */
+
+  .auth-card {
+    @apply mt-8 rounded-[28px] border border-border bg-card p-5;
+  }
+
+  .auth-form {
+    @apply gap-5;
+  }
+
+  /* =========================================================
+   AUTH FIELD
+   ========================================================= */
+
+  .auth-field {
+    @apply gap-2;
+  }
+
+  .auth-label-row {
+    @apply flex-row items-center justify-between;
+  }
+
+  .auth-label {
+    @apply text-sm font-sans-semibold text-primary;
+  }
+
+  .auth-secure-label {
+    @apply text-[11px] font-sans-semibold text-muted-foreground;
+  }
+
+  /* =========================================================
+   AUTH INPUT
+   ========================================================= */
+
+  .auth-input-wrap {
+    @apply relative;
+  }
+
+  .auth-input {
+    @apply min-h-14 rounded-2xl border border-border bg-background px-4 py-3 text-base font-sans-medium text-primary;
+  }
+
+  .auth-input-password {
+    @apply pr-20;
+  }
+
+  .auth-input-error {
+    @apply border-destructive bg-destructive/5;
+  }
+
+  /* =========================================================
+   PASSWORD TOGGLE
+   ========================================================= */
+
+  .auth-password-toggle {
+    @apply absolute right-4 top-0 h-full items-center justify-center;
+  }
+
+  .auth-password-toggle-text {
+    @apply text-sm font-sans-bold text-accent;
+  }
+
+  /* =========================================================
+   AUTH ERROR
+   ========================================================= */
+
+  .auth-error-wrap {
+    @apply mt-0.5;
+  }
+
+  .auth-error {
+    @apply text-xs leading-5 font-sans-medium text-destructive;
+  }
+
+  .auth-server-error {
+    @apply rounded-2xl border border-destructive/15 bg-destructive/10 px-4 py-3;
+  }
+
+  /* =========================================================
+   AUTH BUTTON
+   ========================================================= */
+
+  .auth-button {
+    @apply mt-1 min-h-14 items-center justify-center rounded-2xl bg-accent px-5;
+  }
+
+  .auth-button-disabled {
+    @apply opacity-50;
+  }
+
+  .auth-button-loading {
+    @apply flex-row items-center justify-center gap-2;
+  }
+
+  .auth-button-text {
+    @apply text-base font-sans-bold text-primary;
+  }
+
+  /* =========================================================
+   AUTH LINK
+   ========================================================= */
+
+  .auth-link-row {
+    @apply mt-6 flex-row items-center justify-center gap-1;
+  }
+
+  .auth-link-copy {
+    @apply text-sm font-sans-medium text-muted-foreground;
+  }
+
+  .auth-link {
+    @apply text-sm font-sans-bold text-accent;
+  }
+
   /* ---------------------------------------------------------------------- */
   /* Modal */
   /* ---------------------------------------------------------------------- */
@@ -480,7 +644,6 @@
   @apply mx-3 flex-1 text-center text-xl font-sans-bold text-primary;
 }
 
-
 /* ---------------------------------------------------------
    Section headers
    --------------------------------------------------------- */
@@ -504,7 +667,6 @@
 .insights-view-all-text {
   @apply text-sm font-sans-semibold text-primary;
 }
-
 
 /* ---------------------------------------------------------
    Chart
@@ -551,7 +713,7 @@
 }
 
 .insights-tooltip {
-  @apply absolute -top-1 z-20 min-w-[37px] items-center rounded-lg bg-white p-1 ;
+  @apply absolute -top-1 z-20 min-w-[37px] items-center rounded-lg bg-white p-1;
 }
 
 .insights-tooltip-text {
@@ -565,7 +727,6 @@
 .insights-day {
   @apply mt-2 text-xs font-sans-medium text-[#40506B];
 }
-
 
 /* ---------------------------------------------------------
    Expense summary
@@ -602,7 +763,6 @@
 .insights-expense-change {
   @apply text-sm font-sans-medium text-[#40506B];
 }
-
 
 /* ---------------------------------------------------------
    History cards
@@ -643,7 +803,6 @@
 .insights-history-billing {
   @apply mt-1 text-xs font-sans-medium text-[#40506B];
 }
-
 
 /* ---------------------------------------------------------
    Empty state

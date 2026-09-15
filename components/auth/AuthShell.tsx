@@ -23,37 +23,41 @@ export default function AuthShell({
     <SafeAreaView className="auth-safe-area">
       <KeyboardAvoidingView
         className="auth-screen"
-        behavior={
-          Platform.OS === "ios"
-            ? "padding"
-            : undefined
-        }
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
           className="auth-scroll"
           contentContainerClassName="auth-content"
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode={
+            Platform.OS === "ios" ? "interactive" : "on-drag"
+          }
           showsVerticalScrollIndicator={false}
+          automaticallyAdjustKeyboardInsets
         >
+          {/* Brand */}
           <View className="auth-brand-block">
             <View className="auth-logo-wrap">
+              {/* SubFlow Logo Mark */}
               <View className="auth-logo-mark">
                 <Text className="auth-logo-mark-text">
-                  L
+                  S
                 </Text>
               </View>
 
-              <View>
+              {/* Brand Name */}
+              <View className="auth-brand-copy">
                 <Text className="auth-wordmark">
-                  LedgerFlow
+                  Sub<Text className="auth-wordmark-accent">Flow</Text>
                 </Text>
 
                 <Text className="auth-wordmark-sub">
-                  SMART LEDGER
+                  SUBSCRIPTION MANAGER
                 </Text>
               </View>
             </View>
 
+            {/* Screen Heading */}
             <Text className="auth-title">
               {title}
             </Text>
@@ -63,6 +67,7 @@ export default function AuthShell({
             </Text>
           </View>
 
+          {/* Screen Content */}
           {children}
         </ScrollView>
       </KeyboardAvoidingView>

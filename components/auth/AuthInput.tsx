@@ -19,47 +19,75 @@ export default function AuthInput({
   password = false,
   ...props
 }: AuthInputProps) {
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const hasError = Boolean(error);
 
   return (
     <View className="auth-field">
-      <Text className="auth-label">
-        {label}
-      </Text>
+      {/* Label */}
+      <View className="auth-label-row">
+        <Text className="auth-label">
+          {label}
+        </Text>
 
-      <View className="relative">
+        {password ? (
+          <Text className="auth-secure-label">
+            Secure
+          </Text>
+        ) : null}
+      </View>
+
+      {/* Input */}
+      <View className="auth-input-wrap">
         <TextInput
           {...props}
-          secureTextEntry={
-            password && !showPassword
-          }
+          secureTextEntry={password && !showPassword}
           className={`auth-input ${
-            error ? "auth-input-error" : ""
+            password ? "auth-input-password" : ""
+          } ${
+            hasError ? "auth-input-error" : ""
           }`}
-          placeholderTextColor="rgba(0, 0, 0, 0.45)"
+          placeholderTextColor="rgba(8, 17, 38, 0.42)"
           autoCorrect={false}
+          autoCapitalize={
+            password ? "none" : props.autoCapitalize
+          }
+          accessibilityLabel={label}
         />
 
-        {password && (
+        {/* Password Toggle */}
+        {password ? (
           <Pressable
             onPress={() =>
               setShowPassword((value) => !value)
             }
-            className="absolute right-4 top-0 h-full items-center justify-center"
+            className="auth-password-toggle"
             hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={
+              showPassword
+                ? "Hide password"
+                : "Show password"
+            }
+            accessibilityState={{
+              expanded: showPassword,
+            }}
           >
-            <Text className="text-sm font-sans-semibold text-muted-foreground">
+            <Text className="auth-password-toggle-text">
               {showPassword ? "Hide" : "Show"}
             </Text>
           </Pressable>
-        )}
+        ) : null}
       </View>
 
-      {error ? (
-        <Text className="auth-error">
-          {error}
-        </Text>
+      {/* Error */}
+      {hasError ? (
+        <View className="auth-error-wrap">
+          <Text className="auth-error">
+            {error}
+          </Text>
+        </View>
       ) : null}
     </View>
   );
