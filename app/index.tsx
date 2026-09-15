@@ -264,24 +264,13 @@ export default function WelcomeScreen() {
                   borderRadius: 999,
 
                   backgroundColor: "#FFFFFF",
-
-                  /*
-                   * Smooth press feedback
-                   */
                   transform: [
                     {
                       scale: pressed ? 0.975 : 1,
                     },
                   ],
 
-                  /*
-                   * Android shadow
-                   */
                   elevation: pressed ? 2 : 6,
-
-                  /*
-                   * iOS shadow
-                   */
                   shadowColor: "#000000",
                   shadowOffset: {
                     width: 0,
