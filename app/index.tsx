@@ -18,10 +18,8 @@ export default function WelcomeScreen() {
   const router = useRouter();
 
   const { width, height } = useWindowDimensions();
-
-  // -----------------------------------------
+ 
   // RESPONSIVE VALUES
-  // -----------------------------------------
 
   const isSmallScreen = height < 720;
   const isVerySmallScreen = height < 660;
