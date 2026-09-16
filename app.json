@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
 
-    "icon": "./assets/icons/SubFlow-Logo.png",
+    "icon": "./assets/icons/New-logo-Subflow.png",
 
     "scheme": "subflowapp",
 
@@ -24,14 +24,14 @@
 
     "android": {
       "package": "com.Kaif.subflow",
-      "icon": "./assets/icons/SubFlow-Logo.png",
+      "icon": "./assets/icons/New-logo-Subflow.png",
       "predictiveBackGestureEnabled": false
     },
 
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/icons/SubFlow-Logo.png"
+      "favicon": "./assets/icons/New-logo-Subflow.png"
     },
 
     "plugins": [
@@ -40,7 +40,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/icons/SubFlow-Logo.png",
+          "image": "./assets/icons/New-logo-Subflow.png",
           "imageWidth": 150,
           "resizeMode": "contain",
           "backgroundColor": "#EE7854",
